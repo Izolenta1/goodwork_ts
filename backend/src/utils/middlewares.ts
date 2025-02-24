@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express-serve-static-core"
 
-import { getSessionInfo } from "@controllers/auth_controllers.js"
+import { getSessionInfo } from "@controllers/auth_controllers"
 
 // Функция аутентификации сессии пользователя
 export async function authenticate_session(req: Request, res: Response, next: NextFunction)  {

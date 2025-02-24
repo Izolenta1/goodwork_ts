@@ -4,7 +4,12 @@ import cors from "cors"
 
 import { Express } from "express-serve-static-core";
 
+import auth_routes from "@routes/auth_routes";
+import resume_routes from "@routes/resume_routes";
 import vacancy_router from "@routes/vacancy_routes";
+import responses_router from "@routes/responses_routes";
+import favourites_routes from "@routes/favourites_routes";
+import feedback_routes from "@routes/feedback_routes";
 
 const app: Express = express();
 
@@ -19,7 +24,12 @@ const cors_options = {
 app.use(cors(cors_options))
 
 // Подключение маршрутов
+app.use(auth_routes)
+app.use(resume_routes)
 app.use(vacancy_router)
+app.use(responses_router)
+app.use(favourites_routes)
+app.use(feedback_routes)
 
 const PORT = 3001;
 
