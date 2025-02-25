@@ -37,7 +37,7 @@ export async function login(req: Request, res: Response) {
         if (await bcrypt.compare(req.body.password, hashedpassDB)) {
             let user_data: RowDataPacket | undefined = undefined
             try {
-                const [rows] = await pool.execute<RowDataPacket[]>(`SELECT user_id from users WHERE username = ${pool.escape(req.body.username)}`);
+                const [rows] = await pool.execute<RowDataPacket[]>(`SELECT user_id, username, role from users WHERE username = ${pool.escape(req.body.username)}`);
                 user_data = rows[0];
             } catch (error) {
                 console.log("Database query error:", error);

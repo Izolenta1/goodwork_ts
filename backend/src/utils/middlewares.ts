@@ -6,11 +6,13 @@ import { getSessionInfo } from "@controllers/auth_controllers"
 export async function authenticate_session(req: Request, res: Response, next: NextFunction)  {
     if (!req.cookies.goodwork_session) {
         res.status(200).json({status: 401, payload: "Unauthorized"})
+        return
     }
 
     const user_data = await getSessionInfo(req.cookies.goodwork_session)
     if (!user_data) {
         res.status(200).json({status: 401, payload: "Unauthorized"})
+        return
     }
 
     req.session_data = {
@@ -28,6 +30,7 @@ export function checkRole(role: string) {
     return function(req: Request, res: Response, next: NextFunction) {
         if (req.session_data?.role != role) {
             res.status(200).send({status: 403, payload: "Forbidden"})
+            return
         }
         else {
             return next()
