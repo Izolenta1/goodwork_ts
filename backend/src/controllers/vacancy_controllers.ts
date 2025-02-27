@@ -31,6 +31,8 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
         }
     }
 
+    let currentPage: number = Number(req.query.page)
+
     // Проверка на корректные поисковые запросы
     const ALLOWED_PARAMS: string[] = ["page", "min_salary", "max_salary", "min_exp", "max_exp", "search"]
     for (let key in req.query) {
@@ -54,14 +56,14 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
     let page_count: number = Math.ceil(vacancies_count / VACANCIES_PER_PAGE)
 
     // Проверка на корректность номера введеной страницы
-    if (req.query.page > page_count) {
+    if (currentPage > page_count) {
         return res.status(200).json({ status: 200, payload: { next: null, result: [] } })
     }
 
     // Формирование следующей ссылки
     let next_link: string | null
-    if (req.query.page + 1 <= page_count) {
-        next_link = req.originalUrl.replace(/page=\d+/g, `page=${req.query.page + 1}`)
+    if (currentPage + 1 <= page_count) {
+        next_link = req.originalUrl.replace(/page=\d+/g, `page=${currentPage + 1}`)
     }
     else {
         next_link = null
@@ -69,7 +71,7 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
 
     // Получение вакансий конкретной страницы
     try {
-        const [rows] = await pool.execute<RowDataPacket[]>(`SELECT * FROM vacancy ${queryToSQL({...req.query})} LIMIT ${(req.query.page - 1) * VACANCIES_PER_PAGE}, ${VACANCIES_PER_PAGE}`);
+        const [rows] = await pool.execute<RowDataPacket[]>(`SELECT * FROM vacancy ${queryToSQL({...req.query})} LIMIT ${(currentPage - 1) * VACANCIES_PER_PAGE}, ${VACANCIES_PER_PAGE}`);
         const found_vacancies = rows;
         return res.status(200).json({ status: 200, payload: {next : next_link, result: found_vacancies} })
     } catch (error) {

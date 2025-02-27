@@ -3,6 +3,13 @@ import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { checkServerSession } from "@/lib/checkServerSession";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    icons: {
+        icon: "/favicon.ico"
+    },
+};
 
 export default async function RootLayout({
 	children,
@@ -14,7 +21,7 @@ export default async function RootLayout({
 	return (
 		<AuthProvider serverUser={user}>
 			<html lang="ru">
-				<body className={``}>
+				<body className="flex flex-col min-h-[100vh]">
 					<Header />
 					{children}
 					<Footer />

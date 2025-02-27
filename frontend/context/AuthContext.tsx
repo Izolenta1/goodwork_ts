@@ -6,8 +6,6 @@ import {
 	useState,
 	ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 
 // Типизация пользователя
 interface User {
@@ -61,6 +59,7 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 				return response_data.payload;
 			} else {
 				setUser(response_data.payload)
+				window.location.reload();
                 return "Success"
 			}
 		} catch (error) {
@@ -110,6 +109,7 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 
 			if (response_data.status == 200) {
 				setUser(null)
+				window.location.reload();
 			}
 		} catch (error) {
 			console.error("Ошибка выхода:", error);
