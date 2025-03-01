@@ -20,7 +20,6 @@ export default function Dropdowns({ FilterParams }: DropdownsProps) {
     const [isExpDD, setExpDD] = useState(false)
 
     const [fromSalary, setFromSalary] = useState("")
-    const [toSalary, setToSalary] = useState("")
     const [fromExp, setFromExp] = useState("")
     const [toExp, setToExp] = useState("")
 
@@ -36,10 +35,6 @@ export default function Dropdowns({ FilterParams }: DropdownsProps) {
         setFromSalary(event.target.value.replace(/\D/g, ''))
     }
 
-    function inputToSalary(event: React.ChangeEvent<HTMLInputElement>) {
-        setToSalary(event.target.value.replace(/\D/g, ''))
-    }
-
     function inputFromExp(event: React.ChangeEvent<HTMLInputElement>) {
         setFromExp(event.target.value.replace(/\D/g, ''))
     }
@@ -52,9 +47,6 @@ export default function Dropdowns({ FilterParams }: DropdownsProps) {
     useEffect(() => {
         if (FilterParams.min_salary) {
             setFromSalary(FilterParams.min_salary)
-        }
-        if (FilterParams.max_salary) {
-            setToSalary(FilterParams.max_salary)
         }
         if (FilterParams.min_exp) {
             setFromExp(FilterParams.min_exp)
@@ -88,16 +80,11 @@ export default function Dropdowns({ FilterParams }: DropdownsProps) {
                     <div className='w-[50px] h-[4px] max750px:h-[2px] bg-[#FF6F0E]'></div>
                 </div>
 
-                {/* Инпуты зарплаты */}
+                {/* Инпут зарплаты */}
                 <div className="flex gap-[12px]">
-                    <div className="flex flex-col gap-[12px]">
+                    <div className="flex flex-col gap-[12px] w-full">
                         <span className="text-[14px] leading-[14px] font-mulish font-[600] text-[#222231] select-none">От</span>
-                        <input id="min_salary" autoComplete="off" className="w-full bg-[#DDDDDD] text-[14px] leading-[14px] font-mulish font-[600] text-[#222231] p-[8px] rounded-[8px] outline-none" placeholder="10" value={fromSalary} onChange={inputFromSalary}></input>
-                    </div>
-
-                    <div className="flex flex-col gap-[12px]">
-                        <span className="text-[14px] leading-[14px] font-mulish font-[600] text-[#222231] select-none">До</span>
-                        <input id="max_salary" autoComplete="off" className="w-full bg-[#DDDDDD] text-[14px] leading-[14px] font-mulish font-[600] text-[#222231] p-[8px] rounded-[8px] outline-none" placeholder="10000" value={toSalary} onChange={inputToSalary}></input>
+                        <input id="min_salary" autoComplete="off" className="w-full bg-[#DDDDDD] text-[14px] leading-[14px] font-mulish font-[600] text-[#222231] p-[8px] rounded-[8px] outline-none" placeholder="45000" value={fromSalary} onChange={inputFromSalary}></input>
                     </div>
                 </div>
             </div>

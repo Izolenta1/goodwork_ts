@@ -3,6 +3,7 @@ import { RowDataPacket } from "mysql2";
 
 import { GetAllVacanciesQueryParams } from "@pr_types/vacancy_types";
 import { dataBaseCheckExisting } from "@controllers/general_controller";
+import { getHHRuData } from "@utils/hhru_lib";
 
 import pool from "@controllers/database_controller";
 
@@ -20,6 +21,7 @@ export async function getVacancyById(req: Request, res: Response) {
 
 // Функция поиска вакансий
 export async function getAllVacancies(req: Request<unknown, unknown, unknown, GetAllVacanciesQueryParams>, res: Response) {
+
     // Проверка на наличие пагинации
     if (!req.query.page) {
         req.query.page = 1
@@ -34,7 +36,7 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
     let currentPage: number = Number(req.query.page)
 
     // Проверка на корректные поисковые запросы
-    const ALLOWED_PARAMS: string[] = ["page", "min_salary", "max_salary", "min_exp", "max_exp", "search"]
+    const ALLOWED_PARAMS: string[] = ["page", "min_salary", "min_exp", "max_exp", "search"]
     for (let key in req.query) {
         if (!ALLOWED_PARAMS.includes(key)) {
             return res.status(200).json({ status: 404, payload: "Не найдено" });
@@ -55,11 +57,6 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
     }
     let page_count: number = Math.ceil(vacancies_count / VACANCIES_PER_PAGE)
 
-    // Проверка на корректность номера введеной страницы
-    if (currentPage > page_count) {
-        return res.status(200).json({ status: 200, payload: { next: null, result: [] } })
-    }
-
     // Формирование следующей ссылки
     let next_link: string | null
     if (currentPage + 1 <= page_count) {
@@ -71,9 +68,19 @@ export async function getAllVacancies(req: Request<unknown, unknown, unknown, Ge
 
     // Получение вакансий конкретной страницы
     try {
-        const [rows] = await pool.execute<RowDataPacket[]>(`SELECT * FROM vacancy ${queryToSQL({...req.query})} LIMIT ${(currentPage - 1) * VACANCIES_PER_PAGE}, ${VACANCIES_PER_PAGE}`);
-        const found_vacancies = rows;
-        return res.status(200).json({ status: 200, payload: {next : next_link, result: found_vacancies} })
+        let found_vacancies: RowDataPacket[] = []
+        if (currentPage <= page_count) {
+            const [rows] = await pool.execute<RowDataPacket[]>(`SELECT * FROM vacancy ${queryToSQL({...req.query})} LIMIT ${(currentPage - 1) * VACANCIES_PER_PAGE}, ${VACANCIES_PER_PAGE}`);
+            found_vacancies = rows;
+        }
+
+        const hhru_vacancies = await getHHRuData(currentPage, VACANCIES_PER_PAGE, req.query.search, Number(req.query.min_exp), Number(req.query.max_exp), Number(req.query.min_salary))
+
+        if (hhru_vacancies.vacancies.length != 0) {
+            next_link = req.originalUrl.replace(/page=\d+/g, `page=${currentPage + 1}`)
+        }
+
+        return res.status(200).json({ status: 200, payload: {next : next_link, result: mergeAndShuffle(found_vacancies, hhru_vacancies.vacancies as RowDataPacket[])} })
     } catch (error) {
         console.log("Database query error:", error);
         return res.status(500).json({ status: 500, message: "Internal Server Error" });
@@ -297,4 +304,17 @@ function paramToSQL(param: string, value: string): string {
     }
 
     return ""
+}
+
+// Функции для перемешивания двух массивов
+function shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function mergeAndShuffle<T>(arr1: T[], arr2: T[]): T[] {
+    return shuffleArray([...arr1, ...arr2]);
 }

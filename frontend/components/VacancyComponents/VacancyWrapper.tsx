@@ -14,12 +14,14 @@ interface Vacancy {
     salary: number,
     experience: number,
     description: string,
-    user_id: number
+    user_id?: number,
+    url?: string,
+    type?: string,
+    currency?: string
 }
 
 interface searchParams {
     min_salary?: string,
-    max_salary?: string,
     min_exp?: string,
     max_exp?: string,
     search?: string
@@ -81,7 +83,6 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
     const [search, setSearch] = useState(FilterParams["search"])
     function applyFilter() {
         let min_salary = document.getElementById("min_salary") as HTMLInputElement
-        let max_salary = document.getElementById("max_salary") as HTMLInputElement
         let min_exp = document.getElementById("min_exp") as HTMLInputElement
         let max_exp = document.getElementById("max_exp") as HTMLInputElement
 
@@ -89,9 +90,6 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
 
         if (min_salary.value) {
             new_url.searchParams.append('min_salary', min_salary.value)
-        }
-        if (max_salary.value) {
-            new_url.searchParams.append('max_salary', max_salary.value)
         }
         if (min_exp.value) {
             new_url.searchParams.append('min_exp', min_exp.value)
@@ -140,13 +138,14 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
             {/* Враппер вакансий */}
             <div className="flex flex-col gap-[16px]">
                 {vacanciesList.length > 0
-                    ? vacanciesList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)
+                    ? vacanciesList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} type={vacancy.type} url={vacancy.url} currency={vacancy.currency} />)
                     : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] text-[#313131]">Вакансии не найдены</span>}
             </div>
 
             {/* Блок с загрузкой. Обсервится для подгрузки контента */}
-            <div ref={loadingLastElement} className="w-full h-[100px] max920px:h-[50px] mt-[24px]">
+            <div ref={loadingLastElement} className="flex flex-col items-center gap-[12px] w-full h-[200px] max920px:h-[100px] mt-[24px]">
                 <LoadingScreen className="" />
+                <span className="text-[32px] max920px:text-[16px] font-[700] font-mulish text-[#313131]">Подготовка вакансий</span>
             </div>
         </div>
     );
