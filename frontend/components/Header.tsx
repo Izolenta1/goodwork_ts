@@ -4,20 +4,39 @@ import { useState } from "react";
 import VacancySearchInput from "@/components/GeneralComponents/VacancySearchInput";
 import LoginModal from "@/components/Modals/LoginModal";
 import RegisterModal from "@/components/Modals/RegisterModal";
+import RecoveryModal from "@/components/Modals/RecoveryModel";
 import { useAuth } from "@/context/AuthContext";
 import Heart from "@/svg/Heart";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
     const [activeModal, setActiveModal] = useState("")
 
     const { user, logout } = useAuth();
 
+    // Хук для получения путя и редиректа
+	const router = useRouter();
+	const pathname = usePathname()
+
     async function logoutHandle() {
         if (user == null) {
             return
         }
-        logout()
+        const logout_result = await logout()
+
+        if (logout_result != "Success") {
+			console.log(logout_result);
+		}
+		else {
+			if (pathname.includes("cabinet")) {
+				router.push('/');
+			}
+			else {
+				location.reload()
+			}
+		}
     }
 
     return (
@@ -54,7 +73,7 @@ export default function Header() {
                     </div>
                 </div>
             </header>
-            <><LoginModal activeModal={activeModal} setActiveModal={setActiveModal} /><RegisterModal activeModal={activeModal} setActiveModal={setActiveModal} /></>
+            <><LoginModal activeModal={activeModal} setActiveModal={setActiveModal} /><RegisterModal activeModal={activeModal} setActiveModal={setActiveModal} /><RecoveryModal activeModal={activeModal} setActiveModal={setActiveModal} /></>
         </>
     );
 }

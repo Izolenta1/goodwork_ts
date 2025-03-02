@@ -10,6 +10,7 @@ interface RegisterModalProps {
 
 export default function RegisterModal({ activeModal, setActiveModal }: RegisterModalProps) {
     const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [repeated, setRepeated] = useState("")
     const [role, setRole] = useState("")
@@ -20,23 +21,25 @@ export default function RegisterModal({ activeModal, setActiveModal }: RegisterM
     const [infoText, setInfoText] = useState("")
 
     async function sendRegForm() {
-		const reg_result = await register(username, password, repeated, role);
+		const reg_result = await register(username, email, password, repeated, role);
         if (reg_result != "Success") {
 			setRegError(reg_result);
 		}
 		else {
 			setUsername("")
+            setEmail("")
 			setPassword("")
             setRepeated("")
             setRole("")
             setRegError("")
-            setInfoText("Регистрация прошла успешно. Можете войти в аккаунт")
+            setInfoText("Аккаунт зарегистрирован. Необходимо подтвердить почту.")
 		}
     }
 
     const modalRef = useClickOutside(() => {
         if (activeModal == "Register") {
             setUsername("")
+            setEmail("")
 			setPassword("")
             setRepeated("")
             setRole("")
@@ -75,6 +78,12 @@ export default function RegisterModal({ activeModal, setActiveModal }: RegisterM
                     <div className="flex flex-col w-[320px] max920px:w-full gap-[8px]">
                         <span className="text-[20px] leading-[20px] max920px:text-[16px] max920px:leading-[16px] font-[500] font-mulish text-[#000000]">Логин <span className="text-[#FF5C35]">*</span></span>
                         <input value={username} onChange={(e) => setUsername(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Ваш логин"></input>
+                    </div>
+
+                    {/* Поле почты */}
+                    <div className="flex flex-col w-[320px] max920px:w-full gap-[8px]">
+                        <span className="text-[20px] leading-[20px] max920px:text-[16px] max920px:leading-[16px] font-[500] font-mulish text-[#000000]">Почта <span className="text-[#FF5C35]">*</span></span>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Ваша почта"></input>
                     </div>
 
                     {/* Поле пароля */}

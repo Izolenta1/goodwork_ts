@@ -2,6 +2,8 @@ import { useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 import styles from "@/styles/Header/Modals.module.css";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 interface LoginModalProps {
 	activeModal: string;
@@ -15,6 +17,10 @@ export default function LoginModal({ activeModal, setActiveModal }: LoginModalPr
 	const [loginError, setLoginError] = useState("");
 	const { login } = useAuth();
 
+	// Хук для получения путя и редиректа
+	const router = useRouter();
+	const pathname = usePathname()
+
 	async function sendLoginForm() {
 		const login_result = await login(username, password);
 		if (login_result != "Success") {
@@ -25,6 +31,13 @@ export default function LoginModal({ activeModal, setActiveModal }: LoginModalPr
 			setPassword("")
 			setLoginError("")
 			setActiveModal("")
+
+			if (pathname.includes("verify") || pathname.includes("recovery")) {
+				router.push('/');
+			}
+			else {
+				location.reload()
+			}
 		}
 	}
 
@@ -84,6 +97,12 @@ export default function LoginModal({ activeModal, setActiveModal }: LoginModalPr
 					Нет аккаунта?{" "}
 					<button onClick={() => setActiveModal("Register")} className="text-[#FF6F0E]">
 						Зарегистрироваться
+					</button>
+				</span>
+				<span className="text-[16px] leading-[16px] max920px:text-[14px] max920px:leading-[14px] font-[400] font-mulish text-[#000000] select-none">
+					Забыли пароль?{" "}
+					<button onClick={() => setActiveModal("Recovery")} className="text-[#FF6F0E]">
+						Восстановить
 					</button>
 				</span>
 

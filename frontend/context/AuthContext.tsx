@@ -18,8 +18,9 @@ interface User {
 interface AuthContextType {
 	user: User | null;
 	login: (username: string, password: string) => Promise<string>;
-    register: (username: string, password: string, repeated: string, role: string) => Promise<string>;
-	logout: () => Promise<void>;
+    register: (username: string, email: string, password: string, repeated: string, role: string) => Promise<string>;
+	recovery: (email: string) => Promise<string>;
+	logout: () => Promise<string>;
 }
 
 // Создаем контекст
@@ -59,7 +60,6 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 				return response_data.payload;
 			} else {
 				setUser(response_data.payload)
-				window.location.reload();
                 return "Success"
 			}
 		} catch (error) {
@@ -69,9 +69,10 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 	};
 
     // Функция регистрации
-	const register = async (username: string, password: string, repeated: string, role: string) => {
+	const register = async (username: string, email: string, password: string, repeated: string, role: string) => {
         const form = {
             username: username,
+			email: email,
             password: password,
             repeated: repeated,
             role: role
@@ -90,12 +91,38 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 			if (response_data.status != 200) {
 				return response_data.payload;
 			} else {
-				setUser(response_data.payload)
                 return "Success"
 			}
 		} catch (error) {
 			console.error("Ошибка регистрации:", error);
             return "Ошибка регистрации"
+		}
+	};
+
+	// Функция восстановления
+	const recovery = async (email: string) => {
+		const form = {
+			email: email,
+		}
+
+		try {
+			const response = await fetch("/auth/recovery/create", {
+				method: "POST",
+				headers: {
+					'Content-Type': "application/json"
+				},
+				body: JSON.stringify(form)
+			});
+			const response_data = await response.json();
+
+			if (response_data.status != 200) {
+				return response_data.payload;
+			} else {
+				return "Success"
+			}
+		} catch (error) {
+			console.error("Ошибка восстановления:", error);
+			return "Ошибка восстановления"
 		}
 	};
 
@@ -109,15 +136,19 @@ export function AuthProvider({ children, serverUser  }: { children: ReactNode, s
 
 			if (response_data.status == 200) {
 				setUser(null)
-				window.location.reload();
+				return "Success"
+			}
+			else {
+				return "Ошибка выхода"
 			}
 		} catch (error) {
 			console.error("Ошибка выхода:", error);
+			return "Ошибка выхода"
 		}
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, login, register, logout }}>
+		<AuthContext.Provider value={{ user, login, register, recovery, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
