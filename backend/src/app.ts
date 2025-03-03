@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors"
+import { CronJob } from "cron";
 
 import { Express } from "express-serve-static-core";
 
@@ -10,6 +11,8 @@ import vacancy_router from "@routes/vacancy_routes";
 import responses_router from "@routes/responses_routes";
 import favourites_routes from "@routes/favourites_routes";
 import feedback_routes from "@routes/feedback_routes";
+
+import { clearTemporaryValues } from "@utils/cron";
 
 const app: Express = express();
 
@@ -33,6 +36,14 @@ app.use(feedback_routes)
 
 const PORT = 3001;
 
+let job = new CronJob(
+    '0 */30 * * * *',
+    async function() {
+        clearTemporaryValues()
+    }
+);
+
 app.listen(PORT, () => {
+    job.start()
     console.log("Server is Successfully Running, and App is listening on port: " + PORT)
 });

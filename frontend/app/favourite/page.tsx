@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Favourite() {
-    let verifyURL = `http://localhost:3001/auth/verifySession`
+    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),
@@ -23,7 +23,7 @@ export default async function Favourite() {
         redirect('/');
     }
 
-    const vacanciesRes = await fetch("http://localhost:3001/api/vacancy/favourite", {
+    const vacanciesRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/favourite`, {
         method: "GET",
         headers: await headers(),
     })

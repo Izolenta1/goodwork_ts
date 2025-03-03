@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Cabinet() {
-    let verifyURL = `http://localhost:3001/auth/verifySession`
+    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),

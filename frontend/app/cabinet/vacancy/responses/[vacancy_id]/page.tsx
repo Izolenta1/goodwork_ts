@@ -9,7 +9,7 @@ interface ResponsesProps {
 export async function generateMetadata({ params }: ResponsesProps) {
     let vacancy_id = (await params).vacancy_id
 
-    const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
+    const vacancyRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
     const vacancyData = (await vacancyRes.json())["payload"]
 
     return {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: ResponsesProps) {
 export default async function Responses({ params }: ResponsesProps) {
     let vacancy_id = (await params).vacancy_id
 
-    let verifyURL = `http://localhost:3001/auth/verifySession`
+    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),
@@ -35,10 +35,10 @@ export default async function Responses({ params }: ResponsesProps) {
         redirect('/');
     }
 
-    const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
+    const vacancyRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
     const vacancyData = await vacancyRes.json()
 
-    const resumesRes = await fetch(`http://localhost:3001/api/vacancy/response?vacancy_id=${vacancy_id}`, {
+    const resumesRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/response?vacancy_id=${vacancy_id}`, {
         method: "GET",
         headers: await headers(),
     })

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Vacancy({ searchParams }: VacancyProps) {
-    let new_url = new URL(`http://localhost:3001/api/vacancy/getAllCavancies`);
+    let new_url = new URL(`${process.env.BACKEND_URI}/api/vacancy/getAllCavancies`);
     let params = await searchParams
     let FilterParams: Params = {}
     if (params.min_salary) {

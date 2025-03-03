@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default async function Edit({ params }: EditProps) {
     let vacancy_id = (await params).vacancy_id
 
-    let verifyURL = `http://localhost:3001/auth/verifySession`
+    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),
@@ -38,7 +38,7 @@ export default async function Edit({ params }: EditProps) {
         redirect('/');
     }
 
-    const vacanciesRes = await fetch("http://localhost:3001/api/vacancy/getUserVacancies", {
+    const vacanciesRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getUserVacancies`, {
         method: "GET",
         headers: await headers(),
     })

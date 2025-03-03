@@ -18,7 +18,10 @@ export default function Footer() {
 
                 <VacancySearchInput />
 
-                <span className="max920px:hidden w-[150px] text-[80px] leading-[80px] font-[700] font-mulish text-[#FFFFFF] text-end select-none">GW</span>
+                <div className="flex flex-col items-center max920px:hidden w-[150px] text-[80px] leading-[80px] font-[700] font-mulish text-[#FFFFFF] text-end select-none">
+                    <span>GW</span>
+                    <span className="text-[12px] leading-[12px] font-[700] font-mulish text-[#FFFFFF]">Дипломный проект</span>
+                </div>
             </div>
         </footer>
     );

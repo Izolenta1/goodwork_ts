@@ -46,7 +46,12 @@ export default function Header() {
                 {/* Верхняя часть */}
                 <div className="w-full flex justify-center bg-[#F3F3F3]">
                     <div className="w-[1140px] max1200px:w-[95%] h-[110px] max750px:h-[80px] max450px:h-[120px] flex justify-between max920px:justify-center max920px:gap-[12px] items-center max450px:flex-col-reverse">
-                        <Link href="/" className="max920px:hidden w-[200px] text-[80px] leading-[80px] font-[700] font-mulish text-[#313131] text-start select-none">GW</Link>
+                        <div className="flex justify-start w-[200px] max920px:hidden">
+                            <Link href="/" className="flex flex-col items-center text-[80px] leading-[80px] font-[700] font-mulish text-[#313131] select-none">
+                                <span>GW</span>
+                                <span className="text-[12px] leading-[12px] font-[700] font-mulish text-[#313131]">Дипломный проект</span>
+                            </Link>
+                        </div>
                         <VacancySearchInput />
                         {user == null 
                         ? <button onClick={() => setActiveModal("Login")} className="flex justify-center items-center bg-[#FF6F0E] rounded-[6px] w-[200px] h-[50px] max750px:w-[130px] max750px:h-[40px] max450px:w-[220px] text-[16px] leading-[16px] font-[700] font-mulish text-[#FFFFFF]">Войти</button> 

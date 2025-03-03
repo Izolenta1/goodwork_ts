@@ -116,8 +116,8 @@ export async function addVacancy(req: Request, res: Response) {
     if (checkValueMinMax(req.body.salary, "зарплаты", 1, 15) != "") {
         return res.status(200).json({ status: 409, payload: checkValueMinMax(req.body.salary, "зарплаты", 1, 15) })
     }
-    if (checkValueMinMax(req.body.exp, "опыта работы", 1, 5) != "") {
-        return res.status(200).json({ status: 409, payload: checkValueMinMax(req.body.exp, "опыта работы", 1, 5) })
+    if (checkValueMinMax(req.body.exp, "опыта работы", 1, 2) != "") {
+        return res.status(200).json({ status: 409, payload: checkValueMinMax(req.body.exp, "опыта работы", 1, 2) })
     }
     if (checkValueMinMax(req.body.description, "описания", 1000, 50000) != "") {
         return res.status(200).json({ status: 409, payload: checkValueMinMax(req.body.description, "описания", 1000, 50000) })
@@ -136,31 +136,6 @@ export async function addVacancy(req: Request, res: Response) {
         console.log("Database query error:", error);
         return res.status(500).json({ status: 500, message: "Internal Server Error"});
     }
-
-
-
-    // Гипотетическая новая версия от гптшки
-    // if (checkDescriptionRes != null) {
-    //     return res.status(200).json({ status: 409, payload: "Вакансия с таким описанием уже существует" });
-    // }
-    
-    // // Массив проверок
-    // const validations: { check: () => string, field: string }[] = [
-    //     { check: () => checkValueMinMax(req.body.title, "заголовка", 10, 254), field: "title" },
-    //     { check: () => checkValueMinMax(req.body.salary, "зарплаты", 1, 15), field: "salary" },
-    //     { check: () => checkValueMinMax(req.body.exp, "опыта работы", 1, 5), field: "exp" },
-    //     { check: () => checkValueMinMax(req.body.description, "описания", 1000, 50000), field: "description" },
-    //     { check: () => checkSalary(req.body.salary), field: "salary" },
-    //     { check: () => checkExp(req.body.exp), field: "exp" }
-    // ];
-    
-    // // Проверяем каждую валидацию и сразу возвращаем ошибку, если есть
-    // for (const validation of validations) {
-    //     const error = validation.check();
-    //     if (error !== "") {
-    //         return res.status(200).json({ status: 409, payload: error });
-    //     }
-    // }
 }
 
 // Функция обновления вакансии

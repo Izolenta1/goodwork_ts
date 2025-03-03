@@ -8,7 +8,7 @@ interface CertainVacancyProps {
 export async function generateMetadata({ params }: CertainVacancyProps) {
     let vacancy_id = (await params).vacancy_id
 
-    const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
+    const vacancyRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
     const vacancyData = (await vacancyRes.json())["payload"]
 
     return {
@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: CertainVacancyProps) {
 export default async function CertainVacancy({ params }: CertainVacancyProps) {
     let vacancy_id = (await params).vacancy_id
 
-    const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
+    const vacancyRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
     const vacancyData = (await vacancyRes.json())["payload"]
 
     // Проверка на добавленное в отклик
-    let responseURL = `http://localhost:3001/api/response?vacancy_id=${vacancy_id}`
+    let responseURL = `${process.env.BACKEND_URI}/api/response?vacancy_id=${vacancy_id}`
     const responseRes = await fetch(responseURL, {
         method: "GET",
         headers: await headers(),
@@ -41,7 +41,7 @@ export default async function CertainVacancy({ params }: CertainVacancyProps) {
     }
 
     // Проверка на добавленное в избранное
-    let favouriteURL = `http://localhost:3001/api/favourite?vacancy_id=${vacancy_id}`
+    let favouriteURL = `${process.env.BACKEND_URI}/api/favourite?vacancy_id=${vacancy_id}`
     const favouriteRes = await fetch(favouriteURL, {
         method: "GET",
         headers: await headers(),
@@ -58,7 +58,7 @@ export default async function CertainVacancy({ params }: CertainVacancyProps) {
         isfavouriteSet = false
     }
 
-    const CommentRes = await fetch(`http://localhost:3001/api/vacancy/feedback?vacancy_id=${vacancy_id}`)
+    const CommentRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/feedback?vacancy_id=${vacancy_id}`)
     const CommentList = (await CommentRes.json())["payload"]
 
     return (

@@ -22,7 +22,7 @@ export default async function Verify({ params }: VerifyProps) {
 		verify_id: verify_id,
 	};
 
-	const response = await fetch(`http://localhost:3001/auth/register/verify`, {
+	const response = await fetch(`${process.env.BACKEND_URI}/auth/register/verify`, {
 		method: "POST",
         headers: {
             'Content-Type': "application/json"
