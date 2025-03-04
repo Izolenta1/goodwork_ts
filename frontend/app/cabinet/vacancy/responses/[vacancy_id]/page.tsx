@@ -7,7 +7,7 @@ interface ResponsesProps {
 }
 
 export async function generateMetadata({ params }: ResponsesProps) {
-    let vacancy_id = (await params).vacancy_id
+    const vacancy_id = (await params).vacancy_id
 
     const vacancyRes = await fetch(`${process.env.BACKEND_URI}/api/vacancy/getVacancyById?vacancy_id=${vacancy_id}`)
     const vacancyData = (await vacancyRes.json())["payload"]
@@ -18,9 +18,9 @@ export async function generateMetadata({ params }: ResponsesProps) {
 }
 
 export default async function Responses({ params }: ResponsesProps) {
-    let vacancy_id = (await params).vacancy_id
+    const vacancy_id = (await params).vacancy_id
 
-    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
+    const verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),

@@ -21,7 +21,7 @@ export default function EmployeeWrapper() {
         }
 
         // Выполнение запроса
-        let url = `/api/resume`
+        const url = `/api/resume`
         fetch(url, {
             method: "POST",
             headers: {
@@ -44,7 +44,7 @@ export default function EmployeeWrapper() {
 
     useEffect(() => {
         // Выполнение запроса
-        let url = `/api/resume`
+        const url = `/api/resume`
         fetch(url, {
             method: "GET"
         })

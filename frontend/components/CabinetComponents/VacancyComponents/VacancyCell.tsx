@@ -21,7 +21,7 @@ export default function VacancyCell({ vacancy_id, title, salary, exp, descriptio
             vacancy_id: vacancy_id,
         }
 
-        let url = `/api/vacancy/deleteVacancy`
+        const url = `/api/vacancy/deleteVacancy`
         fetch(url, {
             method: "POST",
             headers: {

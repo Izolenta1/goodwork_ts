@@ -6,6 +6,7 @@ dotenv.config();
 
 const CONNECTION_CONFIG: PoolOptions = {
     connectionLimit: 20,
+    port: Number(process.env.MYSQL_PORT),
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,

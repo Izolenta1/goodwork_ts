@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function New() {
-    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
+    const verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),

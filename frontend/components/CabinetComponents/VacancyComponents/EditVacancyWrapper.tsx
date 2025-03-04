@@ -17,10 +17,10 @@ interface EditVacancyWrapperProps {
 }
 
 export default function EditVacancyWrapper({ VacancyID, VacancyData }: EditVacancyWrapperProps) {
-    const [title, setTitle] = useState("")
-    const [salary, setSalary] = useState("")
-    const [exp, setExp] = useState("")
-    const [description, setDescription] = useState("")
+    const [title, setTitle] = useState(VacancyData.title)
+    const [salary, setSalary] = useState(VacancyData.salary)
+    const [exp, setExp] = useState(VacancyData.experience)
+    const [description, setDescription] = useState(VacancyData.description)
     const descriptionRef = useRef<HTMLTextAreaElement | null>(null)
 
     const [saveInfo, setSaveInfo] = useState("")
@@ -43,7 +43,7 @@ export default function EditVacancyWrapper({ VacancyID, VacancyData }: EditVacan
         }
 
         // Выполнение запроса
-        let url = `/api/vacancy/updateVacancy`
+        const url = `/api/vacancy/updateVacancy`
         fetch(url, {
             method: "POST",
             headers: {
@@ -63,15 +63,6 @@ export default function EditVacancyWrapper({ VacancyID, VacancyData }: EditVacan
                 }
             })
     }
-
-    // Инициализация полей
-    useEffect(() => {
-        setTitle(VacancyData.title)
-        setSalary(VacancyData.salary)
-        setExp(VacancyData.experience)
-
-        setDescription(VacancyData.description)
-    }, [])
 
     useEffect(() => {
         if (descriptionRef.current) {

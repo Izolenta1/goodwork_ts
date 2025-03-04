@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Edit({ params }: EditProps) {
-    let vacancy_id = (await params).vacancy_id
+    const vacancy_id = (await params).vacancy_id
 
-    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
+    const verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),
@@ -44,7 +44,7 @@ export default async function Edit({ params }: EditProps) {
     })
     const vacanciesData = await vacanciesRes.json()
 
-    let result_array = vacanciesData.payload.filter((vacancy: Vacancy) => vacancy.vacancy_id == vacancy_id)
+    const result_array = vacanciesData.payload.filter((vacancy: Vacancy) => vacancy.vacancy_id == vacancy_id)
     if (result_array.length == 0) {
         redirect('/');
     }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Cabinet() {
-    let verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
+    const verifyURL = `${process.env.BACKEND_URI}/auth/verifySession`
     const verifyRes = await fetch(verifyURL, {
         method: "POST",
         headers: await headers(),
@@ -21,7 +21,7 @@ export default async function Cabinet() {
         redirect('/');
     }
 
-    let UserRole: string = verifyData.payload.role
+    const UserRole: string = verifyData.payload.role
 
     return (
         <main className="grow flex flex-col items-center">

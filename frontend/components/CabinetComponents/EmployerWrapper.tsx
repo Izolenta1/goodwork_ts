@@ -14,7 +14,7 @@ export default function EmployerWrapper() {
             .then(response_data => {
                 setVacancies(response_data.payload)
             })
-    }, [])
+    }, [setVacancies])
 
     return (
         <div className="w-[1140px] max1200px:w-[95%] h-fit flex flex-col gap-[32px] max750px:gap-[16px]">

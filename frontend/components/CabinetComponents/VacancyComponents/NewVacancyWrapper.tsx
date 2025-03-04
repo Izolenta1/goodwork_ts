@@ -30,7 +30,7 @@ export default function NewVacancyWrapper() {
         }
 
         // Выполнение запроса
-        let url = `/api/vacancy/addVacancy`
+        const url = `/api/vacancy/addVacancy`
         fetch(url, {
             method: "POST",
             headers: {

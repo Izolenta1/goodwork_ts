@@ -20,7 +20,7 @@ export default async function Recovery({ params }: RecoveryProps) {
 	}
 
 	// Данные для отправки
-	let recoveryData = {
+	const recoveryData = {
 		recovery_id: recovery_id,
 	};
 

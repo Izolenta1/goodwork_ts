@@ -1,4 +1,9 @@
-export default function CommentCell({ username, comment }) {
+interface CommentCellProps {
+    username: string,
+    comment: string
+}
+
+export default function CommentCell({ username, comment }: CommentCellProps) {
     return (
         <div className="flex flex-col gap-[8px] p-[12px] border-[2px] border-[#FF6F0E]">
             <div className='flex flex-col gap-[8px]'>

@@ -26,7 +26,7 @@ export default function RecoveryWrapper({ recovery_id }: RecoveryWrapperProps) {
         setInfoText("")
 
         // Данные для отправки
-        let recoveryData = {
+        const recoveryData = {
             "recovery_id": recovery_id,
             "password": password,
             "repeated": passwordRepeat
@@ -44,17 +44,21 @@ export default function RecoveryWrapper({ recovery_id }: RecoveryWrapperProps) {
         const response_data: ChangePasswordResponse = await response.json()
 
         // Обработка результата изменения пароля
-        response_data.status == 200 ? process_change_success(response_data) : process_change_error(response_data)
+        if (response_data.status === 200) {
+            process_change_success();
+        } else {
+            process_change_error(response_data);
+        }
     }
 
     // Функция обработки ошибки восстановления
     async function process_change_error(response: ChangePasswordResponse) {
-        let error_text = response.payload
+        const error_text = response.payload
         setErrorText(error_text)
     }
 
     // Вывод информации об отправке письма
-    async function process_change_success(response: ChangePasswordResponse) {
+    async function process_change_success() {
         setInfoText("Пароль успешно изменен")
     }
 

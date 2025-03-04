@@ -18,7 +18,7 @@ export default async function Verify({ params }: VerifyProps) {
 	}
 
 	// Данные для отправки
-	let verifyData = {
+	const verifyData = {
 		verify_id: verify_id,
 	};
 

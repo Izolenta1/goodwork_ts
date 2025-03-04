@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Vacancy({ searchParams }: VacancyProps) {
-    let new_url = new URL(`${process.env.BACKEND_URI}/api/vacancy/getAllCavancies`);
-    let params = await searchParams
-    let FilterParams: Params = {}
+    const new_url = new URL(`${process.env.BACKEND_URI}/api/vacancy/getAllCavancies`);
+    const params = await searchParams
+    const FilterParams: Params = {}
     if (params.min_salary) {
         new_url.searchParams.append('min_salary', params.min_salary)
         FilterParams["min_salary"] = params.min_salary
@@ -45,8 +45,8 @@ export default async function Vacancy({ searchParams }: VacancyProps) {
     const vacanciesRes = await fetch(new_url.href)
     const vacanciesData = await vacanciesRes.json()
 
-    let VacanciesList = vacanciesData.payload.result
-    let VacanciesNext = vacanciesData.payload.next
+    const VacanciesList = vacanciesData.payload.result
+    const VacanciesNext = vacanciesData.payload.next
 
     return (
         <main className="grow flex flex-col items-center">

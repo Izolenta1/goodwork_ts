@@ -43,7 +43,7 @@ export default function CertainVacancyWrapper({ vacancyData, isResponseSet, isfa
         }
 
         // Выполнение запроса
-        let url = `/api/response`
+        const url = `/api/response`
         fetch(url, {
             method: "POST",
             headers: {
@@ -80,7 +80,7 @@ export default function CertainVacancyWrapper({ vacancyData, isResponseSet, isfa
         }
 
         // Выполнение запроса
-        let url = `/api/favourite`
+        const url = `/api/favourite`
         fetch(url, {
             method: "POST",
             headers: {
@@ -122,7 +122,7 @@ export default function CertainVacancyWrapper({ vacancyData, isResponseSet, isfa
         }
 
         // Выполнение запроса
-        let url = `/api/vacancy/feedback`
+        const url = `/api/vacancy/feedback`
         fetch(url, {
             method: "POST",
             headers: {

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import useClickOutside from "@/hooks/useClickOutside"
 import Arrow from "@/svg/Arrow"
 import styles from '@/styles/VacancyComponents/Dropdowns.module.css'

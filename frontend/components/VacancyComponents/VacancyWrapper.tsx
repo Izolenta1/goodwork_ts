@@ -40,22 +40,22 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
     const loadingLastElement = useRef<HTMLDivElement | null>(null)
     const observer = useRef<IntersectionObserver | null>(null)
 
-    // Функция загрузки данных
-    const fetchVacancies = async () => {
-        if (!vacanciesNext) return;
-
-        try {
-            const response = await fetch(vacanciesNext);
-            const data = await response.json();
-
-            setVacanciesList((prev) => [...prev, ...data.payload.result]);
-            setVacanciesNext(data.payload.next);
-        } catch (error) {
-            console.error("Ошибка загрузки вакансий:", error);
-        }
-    };
-
     useEffect(() => {
+        // Функция загрузки данных
+        const fetchVacancies = async () => {
+            if (!vacanciesNext) return;
+
+            try {
+                const response = await fetch(vacanciesNext);
+                const data = await response.json();
+
+                setVacanciesList((prev) => [...prev, ...data.payload.result]);
+                setVacanciesNext(data.payload.next);
+            } catch (error) {
+                console.error("Ошибка загрузки вакансий:", error);
+            }
+        };
+
         if (!loadingLastElement.current) return;
 
         if (vacanciesNext == null) {
@@ -72,7 +72,7 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
         observer.current.observe(loadingLastElement.current);
 
         return () => observer.current?.disconnect();
-    }, [vacanciesNext]);
+    }, [vacanciesNext, setVacanciesList, setVacanciesNext]);
 
     useEffect(() => {
         window.addEventListener("beforeunload", function () { window.scrollTo(0, 0); })
@@ -80,13 +80,12 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
 
     // Функция применения фильтра
     const router = useRouter();
-    const [search, setSearch] = useState(FilterParams["search"])
     function applyFilter() {
-        let min_salary = document.getElementById("min_salary") as HTMLInputElement
-        let min_exp = document.getElementById("min_exp") as HTMLInputElement
-        let max_exp = document.getElementById("max_exp") as HTMLInputElement
+        const min_salary = document.getElementById("min_salary") as HTMLInputElement
+        const min_exp = document.getElementById("min_exp") as HTMLInputElement
+        const max_exp = document.getElementById("max_exp") as HTMLInputElement
 
-        let new_url = new URL(`http://localhost:3000/vacancy`);
+        const new_url = new URL(`http://localhost:3000/vacancy`);
 
         if (min_salary.value) {
             new_url.searchParams.append('min_salary', min_salary.value)
@@ -97,8 +96,8 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
         if (max_exp.value) {
             new_url.searchParams.append('max_exp', max_exp.value)
         }
-        if (search) {
-            new_url.searchParams.append('search', search)
+        if (FilterParams["search"]) {
+            new_url.searchParams.append('search', FilterParams["search"])
         }
 
         router.push(`${new_url.pathname}${new_url.search}`)
@@ -111,8 +110,8 @@ export default function VacancyWrapper({ VacanciesList, VacanciesNext, FilterPar
             {/* Заголовок */}
             <div className='flex flex-col mt-[16px] gap-[8px]'>
                 <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Вакансии</span>
-                {search != null
-                    ? <span className="text-[32px] leading-[32px] max750px:text-[14px] max750px:leading-[14px] font-[500] font-mulish text-[#313131]">«{search}»</span>
+                {FilterParams["search"] != null
+                    ? <span className="text-[32px] leading-[32px] max750px:text-[14px] max750px:leading-[14px] font-[500] font-mulish text-[#313131]">«{FilterParams["search"]}»</span>
                     : null}
                 <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
             </div>

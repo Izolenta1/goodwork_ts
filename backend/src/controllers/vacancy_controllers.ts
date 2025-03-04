@@ -149,8 +149,10 @@ export async function updateVacancy(req: Request, res: Response) {
         return res.status(200).json({status: 500, payload: "Ошибка сервера"})
     }
 
+    console.log(check_description_res)
+
     if (check_description_res.length != 0) {
-        if (check_description_res.length > 1 || check_description_res[0].vacancy_id != req.body.vacancy_id) {
+        if (check_description_res[0].vacancy_id != req.body.vacancy_id) {
             return res.status(200).json({ status: 409, payload: "Вакансия с таким описанием уже существует" })
         }
     }
